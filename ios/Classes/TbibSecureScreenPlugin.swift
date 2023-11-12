@@ -40,7 +40,7 @@ public class TbibSecureScreenPlugin: NSObject, FlutterPlugin {
 
         previewLayer = AVCaptureVideoPreviewLayer(session: screenCaptureSession!)
         if let window = UIApplication.shared.windows.first {
-          previewLayer?.frame = window.layer.bounds
+          previewLayer?.frame = window.bounds
           window.layer.addSublayer(previewLayer!)
         }
 
@@ -58,5 +58,6 @@ public class TbibSecureScreenPlugin: NSObject, FlutterPlugin {
     previewLayer = nil
     screenCaptureSession = nil
   }
+
 }
 
