@@ -1,12 +1,11 @@
 import Flutter
 // import AVKit
-import AVFoundation
+// import AVFoundation
 import UIKit
 
 public class TbibSecureScreenPlugin: NSObject, FlutterPlugin { 
   
-  private var screenCaptureSession: AVCaptureSession?
-    private var previewLayer: AVCaptureVideoPreviewLayer?
+    var blackScreenField: UITextField?
 
 
   public static func register(with registrar: FlutterPluginRegistrar) {
@@ -30,33 +29,25 @@ public class TbibSecureScreenPlugin: NSObject, FlutterPlugin {
     }
   }
    private func startScreenCapturePrevention() {
-    #if !targetEnvironment(simulator)
-    let captureDevice = AVCaptureDevice.default(for: .video)
-    if let device = captureDevice {
-      do {
-        let input = try AVCaptureDeviceInput(device: device)
-        screenCaptureSession = AVCaptureSession()
-        screenCaptureSession?.addInput(input)
+      // guard let window = UIApplication.shared.windows.first else {
+      //       return
+      //   }
 
-        previewLayer = AVCaptureVideoPreviewLayer(session: screenCaptureSession!)
-        if let window = UIApplication.shared.windows.first {
-          previewLayer?.frame = window.bounds
-          window.layer.addSublayer(previewLayer!)
-        }
+      //   blackScreenField = UITextField()
+      //   blackScreenField?.isSecureTextEntry = true
+      //   window.addSubview(blackScreenField!)
+      //   blackScreenField?.centerYAnchor.constraint(equalTo: window.centerYAnchor).isActive = true
+      //   blackScreenField?.centerXAnchor.constraint(equalTo: window.centerXAnchor).isActive = true
+      //   window.layer.superlayer?.addSublayer(blackScreenField!.layer)
+      //   blackScreenField?.layer.sublayers?.first?.addSublayer(window.layer)
 
-        screenCaptureSession?.startRunning()
-      } catch {
-        print("Error setting up screen capture prevention: \(error.localizedDescription)")
-      }
-    }
-    #endif
+ 
   }
 
   private func stopScreenCapturePrevention() {
-    previewLayer?.removeFromSuperlayer()
-    screenCaptureSession?.stopRunning()
-    previewLayer = nil
-    screenCaptureSession = nil
+    // blackScreenField?.removeFromSuperview()
+    //     blackScreenField = nil
+
   }
 
 }
