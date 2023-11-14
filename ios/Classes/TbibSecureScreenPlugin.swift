@@ -5,8 +5,7 @@ import UIKit
 
 public class TbibSecureScreenPlugin: NSObject, FlutterPlugin { 
   
-    var blackScreenField: UITextField?
-
+  static var activeSecureScreen = false;
 
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(name: "tbib_secure_screen", binaryMessenger: registrar.messenger())
@@ -19,36 +18,72 @@ public class TbibSecureScreenPlugin: NSObject, FlutterPlugin {
     case "getPlatformVersion":
       result("iOS " + UIDevice.current.systemVersion)
     case  "setSecureScreen":
-      startScreenCapturePrevention()
+     self.activeSecureScreen = true;
       result("success")
     case "setUnSecureScreen":
-    stopScreenCapturePrevention()
+     self.activeSecureScreen = false;
       result("success")
     default:
       result(FlutterMethodNotImplemented)
     }
   }
-   private func startScreenCapturePrevention() {
-      // guard let window = UIApplication.shared.windows.first else {
-      //       return
-      //   }
+   public func listenToTakeScreenRecording() {
+   guard let window = UIApplication.shared.windows.first else {
+            return
+        }
+        if #available(iOS 11.0, *) {
+            NotificationCenter.default.addObserver(
+              forName: UIScreen.capturedDidChangeNotification,
+              object: nil,
+              queue: .main) { notification in
+          
+                  DispatchQueue.main.async {
+                      if window?.isHidden == false{
+                          self.hideScreen()
+                      }
+                      
+                  }
+              }
+        } else {
+        }
+    }
+    
+    public func listenToTakeScreenshot() {  
+       guard let window = UIApplication.shared.windows.first else {
+            return
+        }
+        NotificationCenter.default.addObserver(
+          forName: UIApplication.userDidTakeScreenshotNotification,
+          object: nil,
+          queue: .main) { notification in
+              
+              if window?.isHidden == false{
+                  self.blurScreen();
+              }
+            }
+    }
+    
+   public func blurScreen(style: UIBlurEffect.Style = UIBlurEffect.Style.regular) {
+      if(activeSecureScreen){
+         guard let window = UIApplication.shared.windows.first else {
+            return
+        }
+        screen = UIScreen.main.snapshotView(afterScreenUpdates: false)
+        let blurEffect = UIBlurEffect(style: style)
+        let blurBackground = UIVisualEffectView(effect: blurEffect)
+        screen?.addSubview(blurBackground)
+        blurBackground.frame = (screen?.frame)!
+        window?.addSubview(screen!)
+      }
+    }
 
-      //   blackScreenField = UITextField()
-      //   blackScreenField?.isSecureTextEntry = true
-      //   window.addSubview(blackScreenField!)
-      //   blackScreenField?.centerYAnchor.constraint(equalTo: window.centerYAnchor).isActive = true
-      //   blackScreenField?.centerXAnchor.constraint(equalTo: window.centerXAnchor).isActive = true
-      //   window.layer.superlayer?.addSublayer(blackScreenField!.layer)
-      //   blackScreenField?.layer.sublayers?.first?.addSublayer(window.layer)
+  public  func removeBlurScreen() {
 
- 
-  }
-
-  private func stopScreenCapturePrevention() {
-    // blackScreenField?.removeFromSuperview()
-    //     blackScreenField = nil
-
-  }
+         guard let window = UIApplication.shared.windows.first else {
+            return
+        }
+        screen?.removeFromSuperview()
+    }
 
 }
 
