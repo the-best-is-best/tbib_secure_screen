@@ -44,6 +44,17 @@ public class TbibSecureScreenPlugin: NSObject, FlutterPlugin {
       }
     }
   }
+  private func hideScreen() {
+          if #available(iOS 11.0, *) {
+              if UIScreen.main.isCaptured {
+                  self.blurScreen();
+              } else {
+                  self.removeBlurScreen();
+              }
+          } else {
+              // Fallback on earlier versions
+          }
+      }
 
   public func listenToTakeScreenshot() {  
     guard let window = UIApplication.shared.windows.first else {
