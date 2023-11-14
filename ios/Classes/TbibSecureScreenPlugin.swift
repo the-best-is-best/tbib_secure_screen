@@ -3,7 +3,7 @@ import UIKit
 
 public class TbibSecureScreenPlugin: NSObject, FlutterPlugin {
   
-  static var activeSecureScreen = false
+   var activeSecureScreen = false
   var screen: UIView?
 
   public static func register(with registrar: FlutterPluginRegistrar) {
@@ -74,6 +74,11 @@ public class TbibSecureScreenPlugin: NSObject, FlutterPlugin {
   }
 
   public func removeBlurScreen() {
+     if activeSecureScreen {
+      guard let window = UIApplication.shared.windows.first else {
+        return
+      }
     screen?.removeFromSuperview()
   }
+}
 }
