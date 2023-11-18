@@ -4,13 +4,14 @@ import UIKit
 public class TbibSecureScreenPlugin: NSObject, FlutterPlugin {
     
     var activeSecureScreen = false
-    var secureTextField: UITextField?
+    // var secureTextField: UITextField?
 
     public static var shared: TbibSecureScreenPlugin?
 
     public static func register(with registrar: FlutterPluginRegistrar) {
         let channel = FlutterMethodChannel(name: "tbib_secure_screen", binaryMessenger: registrar.messenger())
         shared = TbibSecureScreenPlugin()
+       
         registrar.addMethodCallDelegate(shared!, channel: channel)
     }  
 
@@ -33,28 +34,33 @@ public class TbibSecureScreenPlugin: NSObject, FlutterPlugin {
 
     public func blurScreen() {
         if activeSecureScreen {
+            
             guard let window = UIApplication.shared.windows.first else {
                 return
             }
-            secureTextField = UITextField()
-            secureTextField?.isSecureTextEntry = true
-            window.addSubview(secureTextField!)
-            secureTextField?.centerYAnchor.constraint(equalTo: window.centerYAnchor).isActive = true
-            secureTextField?.centerXAnchor.constraint(equalTo: window.centerXAnchor).isActive = true
-            window.layer.superlayer?.addSublayer(secureTextField!.layer)
-            secureTextField?.layer.sublayers?.first?.addSublayer(window.layer)
-
             window.rootViewController?.view.endEditing(true)
             window.isHidden = true
        }
     }
 
     public func removeBlurScreen() {
-        secureTextField?.removeFromSuperview()
-        secureTextField = nil
+        // secureTextField?.removeFromSuperview()
+        // secureTextField = nil
         guard let window = UIApplication.shared.windows.first else {
             return
         }
         window.isHidden = false
     }
+    public func initSecure(){
+         guard let window = UIApplication.shared.windows.first else {
+                return
+        }
+        let field = UITextField()
+        field.isSecureTextEntry = true
+        window.addSubview(field)
+        field.centerYAnchor.constraint(equalTo: window.centerYAnchor).isActive = true
+        field.centerXAnchor.constraint(equalTo: window.centerXAnchor).isActive = true
+        window.layer.superlayer?.addSublayer(field.layer)
+        field.layer.sublayers?.first?.addSublayer(window.layer)
+    } 
 }
