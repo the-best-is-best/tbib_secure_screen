@@ -33,34 +33,38 @@ public class TbibSecureScreenPlugin: NSObject, FlutterPlugin {
     }
 
     public func blurScreen() {
-        if activeSecureScreen {
+        do{
+        if (self.activeSecureScreen==true) {
             
             guard let window = UIApplication.shared.windows.first else {
                 return
             }
             window.rootViewController?.view.endEditing(true)
             window.isHidden = true
-       }
+        }
+       }catch {}
     }
 
     public func removeBlurScreen() {
-        // secureTextField?.removeFromSuperview()
-        // secureTextField = nil
+      do{
         guard let window = UIApplication.shared.windows.first else {
             return
         }
-        window.isHidden = false
+        window.isHidden = false;
+      }catch {}
     }
     public func initSecure(){
+        do{
+         
          guard let window = UIApplication.shared.windows.first else {
-                return
+            return
         }
         let field = UITextField()
         field.isSecureTextEntry = true
+        field.isHidden = true // Initially hide the field
         window.addSubview(field)
-        field.centerYAnchor.constraint(equalTo: window.centerYAnchor).isActive = true
-        field.centerXAnchor.constraint(equalTo: window.centerXAnchor).isActive = true
-        window.layer.superlayer?.addSublayer(field.layer)
-        field.layer.sublayers?.first?.addSublayer(window.layer)
+        self.secureTextField = field
+        }
+        catch {}
     } 
 }
