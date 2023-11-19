@@ -1,6 +1,6 @@
 name: tbib_secure_screen
-description: A new Flutter plugin project.
-version: 0.0.1
+description: this package for make screenshot or screen recorder with blank screen after save.
+version: 1.0.0
 homepage:
 
 environment:
