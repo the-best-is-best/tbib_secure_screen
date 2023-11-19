@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:tbib_secure_screen/tbib_secure_screen.dart';
 
 void main() {
+  TBIBSecureScreen().setSecureScreen();
   runApp(const MyApp());
 }
 
