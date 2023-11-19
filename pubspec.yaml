@@ -1,7 +1,7 @@
 name: tbib_secure_screen
 description: this package for make screenshot or screen recorder with blank screen after save.
 version: 1.0.0
-homepage:
+homepage: https://github.com/the-best-is-best/tbib_secure_screen
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
