@@ -3,7 +3,7 @@
 # Run `pod lib lint tbib_secure_screen.podspec` to validate before publishing.
 #
 Pod::Spec.new do |s|
-  s.name             = 'TbibSecureScreenPlugin'
+  s.name             = 'tbib_secure_screen'
   s.version          = '0.0.1'
   s.summary          = 'A new Flutter plugin project.'
   s.description      = <<-DESC
